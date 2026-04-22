@@ -1,0 +1,555 @@
+/* base.css - 重置与基础 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+li {
+    list-style: none;
+}
+
+body {
+    font: 16px/1.6 "Microsoft Yahei", "PingFang SC", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+    color: #2c2c2c;
+    background-color: #fff9e8;   /* 柔和米黄 */
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.wrapper {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* index.css - 全部样式 */
+/* 头部 */
+.header {
+    height: 90px;
+    background: #a51114;  /* 沉稳故宫红 */
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
+.header .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 20px;
+}
+
+.logo a {
+    display: block;
+    width: 220px;
+    height: 54px;
+    background-image: url(../images/logo测试2.0.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: left center;
+    font-family: "楷体";
+}
+/* 若logo图片不存在，显示文字后备 */
+.logo h1 a {
+    background: none;
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffecb3;
+    width: auto;
+    height: auto;
+    line-height: 1;
+}
+.logo h1 a:hover { color: #fff; }
+
+.nav {
+    margin-left: 20px;
+    flex: 1;
+}
+
+.nav ul {
+    display: flex;
+    gap: 32px;
+}
+
+.nav li a {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff5e6;
+    padding: 8px 0;
+    transition: 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.nav li a:hover,
+.nav li .active {
+    border-bottom-color: #ffc107;
+    color: #ffec80;
+}
+
+/* 搜索框 */
+.search {
+    display: flex;
+    align-items: center;
+    background: #fff3e0;
+    border-radius: 40px;
+    padding: 6px 16px;
+    width: 260px;
+    transition: 0.2s;
+}
+.search input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    outline: none;
+    padding: 6px 0;
+}
+.search input::placeholder {
+    color: #b87c4f;
+}
+.search a {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+    background-size: cover;
+    opacity: 0.7;
+}
+.user {
+    margin-left: 24px;
+}
+.user a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff0db;
+    font-weight: 500;
+}
+.user img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #ffcd94;
+    background: #f5e1c0;
+}
+.user span { font-size: 15px; }
+
+/* 轮播图区域 */
+.banner {
+    background: #f3e9d2;
+    padding: 40px 0 20px;
+}
+.carousel-container {
+    position: relative;
+    max-width: 1100px;
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+}
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+.carousel-track .slide img {
+    width: 100%;
+    flex-shrink: 0;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+}
+
+/* 轮播图每张图片的容器 */
+.slide {
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+/* 图片本身 */
+.slide img {
+    width: 100%;
+    display: block;
+}
+
+/* 文字层 - 默认透明不可见 */
+.caption {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 18px;
+    font-family: "楷体", "KaiTi", serif;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;  /* 让文字层不影响鼠标点击按钮 */
+}
+
+/* 鼠标悬停时显示文字 */
+.slide:hover .caption {
+    opacity: 1;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    color: white;
+    border: none;
+    font-size: 32px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
+    z-index: 10;
+}
+.prev:hover, .next:hover {
+    background: #c21114;
+    transform: translateY(-50%) scale(1.05);
+}
+.prev { left: 16px; }
+.next { right: 16px; }
+.dots {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+}
+.dot {
+    width: 10px;
+    height: 10px;
+    background: rgba(255,255,240,0.6);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.dot.active {
+    background: #ffc107;
+    transform: scale(1.4);
+    box-shadow: 0 0 6px #ffb347;
+}
+
+/* 热门推荐区 */
+.hot-section {
+    margin: 60px auto;
+}
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.section-title h2 {
+    font-size: 32px;
+    color: #b13b2d;
+    letter-spacing: 2px;
+}
+.section-title p {
+    font-size: 16px;
+    color: #9b6a43;
+    margin-top: 6px;
+}
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+}
+.food-card {
+    background: #ffffffdd;
+    backdrop-filter: blur(2px);
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.food-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 30px rgba(165, 20, 20, 0.15);
+}
+.card-img {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+.card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.4s;
+}
+.food-card:hover .card-img img {
+    transform: scale(1.05);
+}
+.food-card h3 {
+    font-size: 20px;
+    margin: 18px 18px 8px;
+    color: #b4442c;
+}
+.food-card p {
+    font-size: 14px;
+    margin: 0 18px 12px;
+    color: #5f4c3b;
+    line-height: 1.4;
+}
+.tag {
+    display: inline-block;
+    background: #fbe9d2;
+    color: #bc5a2c;
+    border-radius: 30px;
+    padding: 4px 14px;
+    font-size: 12px;
+    margin: 0 18px 18px;
+}
+
+/* 传承人区域 */
+.inherit-section {
+    background: linear-gradient(120deg, #fcf3e0, #feeed8);
+    padding: 60px 0;
+    margin: 40px 0 0;
+}
+.section-title.white h2,
+.section-title.white p {
+    color: #7c3e1f;
+}
+.master-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 30px;
+}
+.master-card {
+    text-align: center;
+    width: 220px;
+    background: white;
+    padding: 24px 16px 20px;
+    border-radius: 48px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+    transition: 0.2s;
+}
+.master-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffbc6e;
+}
+.master-card h4 {
+    margin: 16px 0 6px;
+    font-size: 20px;
+    color: #ab3e28;
+}
+.master-card p {
+    font-size: 13px;
+    color: #7e623f;
+}
+
+
+
+
+
+/* ========== 新增：长三角非遗美食地图板块 CSS 样式 ========== */
+/* 请将此段样式添加到您的 css测试版本.css 文件中 */
+
+/* 地图外层容器 */
+.map-wrapper {
+    margin: 60px auto 40px;
+    background: linear-gradient(145deg, #fff7ed, #fff2e2);
+    border-radius: 48px;
+    padding: 20px 0 40px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+}
+
+/* 地图主容器 (相对定位基准) */
+.map-container {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 20px auto 0;
+    background: #fffbf0;
+    border-radius: 32px;
+    overflow: visible;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s;
+}
+
+/* SVG 地图样式 - 完全铺满容器，只作为视觉底图 */
+.map-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 28px;
+    pointer-events: none;      /* 让SVG不干扰圆点点击 */
+    background: #fef7e8;
+}
+
+/* 圆点容器 (绝对定位覆盖层) */
+.map-dots-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;      /* 容器穿透，但内部圆点可点 */
+}
+
+/* 城市美食圆点 */
+.food-dot {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background: #c5282c;
+    border: 3px solid #ffefb9;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s;
+    z-index: 20;
+    /* 辅助定位小圆点中心偏移 */
+    transform: translate(-50%, -50%);
+}
+
+.food-dot:hover {
+    transform: translate(-50%, -50%) scale(1.25);
+    background: #e0452c;
+    box-shadow: 0 0 0 4px rgba(255, 200, 100, 0.6);
+}
+
+/* 可选的脉冲动画 (初次加载时略微提示) */
+@keyframes gentlePulse {
+    0% { box-shadow: 0 0 0 0 rgba(197, 40, 44, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(197, 40, 44, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(197, 40, 44, 0); }
+}
+.food-dot {
+    animation: gentlePulse 1.5s ease-out 1;
+}
+
+/* 美食信息卡片 (圆点旁弹出) */
+.food-info-card {
+    position: absolute;
+    min-width: 240px;
+    max-width: 300px;
+    background: #ffffffef;
+    backdrop-filter: blur(8px);
+    background: linear-gradient(135deg, #fffef7, #fff9ef);
+    border-radius: 28px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid #f3cf9f;
+    z-index: 100;
+    transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    font-family: inherit;
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #b13b2d;
+    color: #fff3e0;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.close-card {
+    font-size: 24px;
+    font-weight: 400;
+    cursor: pointer;
+    line-height: 1;
+    transition: 0.1s;
+    color: #ffefc0;
+}
+.close-card:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.food-info-content {
+    padding: 14px 18px 18px;
+    max-height: 280px;
+    overflow-y: auto;
+    font-size: 14px;
+    color: #4a3a2a;
+}
+
+.food-info-content p {
+    margin: 0 0 8px 0;
+    padding-left: 8px;
+    border-left: 3px solid #e6b873;
+    line-height: 1.4;
+}
+
+.food-info-content strong {
+    color: #b5452c;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+/* 滚动条美化 */
+.food-info-content::-webkit-scrollbar {
+    width: 4px;
+}
+.food-info-content::-webkit-scrollbar-track {
+    background: #f1e3cf;
+    border-radius: 4px;
+}
+.food-info-content::-webkit-scrollbar-thumb {
+    background: #cb7b48;
+    border-radius: 4px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .food-dot {
+        width: 22px;
+        height: 22px;
+        border-width: 2px;
+    }
+    .food-info-card {
+        min-width: 200px;
+        max-width: 260px;
+        font-size: 12px;
+    }
+    .card-header {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}
+
+/* 地图部分结束 */
+
+/* 页脚 */
+.footer {
+    background: #2a2418;
+    color: #e9dbc9;
+    text-align: center;
+    padding: 28px 0;
+    font-size: 14px;
+}
+.footer p {
+    margin: 6px 0;
+    letter-spacing: 0.5px;
+}

@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>非遗食探 - 长三角非遗美食文化溯源与服务平台</title>
+    <style>
+        /* base.css - 重置与基础 */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    body {
+        font: 16px/1.6 "Microsoft Yahei", "PingFang SC", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+        color: #2c2c2c;
+        background-color: #fff9e8;   /* 柔和米黄 */
+    }
+
+    a {
+        color: #333;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .wrapper {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* index.css - 全部样式 */
+    /* 头部 */
+    .header {
+        height: 90px;
+        background: #a51114;  /* 沉稳故宫红 */
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        position: sticky;
+        top: 0;
+        z-index: 99;
+    }
+
+    .header .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 20px;
+    }
+
+    .logo a {
+        display: block;
+        width: 220px;
+        height: 54px;
+        background-image: url(./images/logo测试2.0.jpg);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: left center;
+        font-family: "楷体";
+    }
+    /* 若logo图片不存在，显示文字后备 */
+    .logo h1 a {
+        background: none;
+        font-size: 28px;
+        font-weight: bold;
+        color: #ffecb3;
+        width: auto;
+        height: auto;
+        line-height: 1;
+    }
+    .logo h1 a:hover { color: #fff; }
+
+    .nav {
+        margin-left: 20px;
+        flex: 1;
+    }
+
+    .nav ul {
+        display: flex;
+        gap: 32px;
+    }
+
+    .nav li a {
+        font-size: 18px;
+        font-weight: 500;
+        color: #fff5e6;
+        padding: 8px 0;
+        transition: 0.2s;
+        border-bottom: 2px solid transparent;
+    }
+
+    .nav li a:hover,
+    .nav li .active {
+        border-bottom-color: #ffc107;
+        color: #ffec80;
+    }
+
+    /* 搜索框 */
+    .search {
+        display: flex;
+        align-items: center;
+        background: #fff3e0;
+        border-radius: 40px;
+        padding: 6px 16px;
+        width: 260px;
+        transition: 0.2s;
+    }
+    .search input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 14px;
+        outline: none;
+        padding: 6px 0;
+    }
+    .search input::placeholder {
+        color: #b87c4f;
+    }
+    .search a {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+        background-size: cover;
+        opacity: 0.7;
+    }
+    .user {
+        margin-left: 24px;
+    }
+    .user a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff0db;
+        font-weight: 500;
+    }
+    .user img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid #ffcd94;
+        background: #f5e1c0;
+    }
+    .user span { font-size: 15px; }
+
+    /* 轮播图区域 */
+    .banner {
+        background: #f3e9d2;
+        padding: 40px 0 20px;
+    }
+    .carousel-container {
+        position: relative;
+        max-width: 1100px;
+        width: 90%;
+        margin: 0 auto;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+    }
+    .carousel-track {
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .carousel-track .slide img {
+        width: 100%;
+        flex-shrink: 0;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* 轮播图每张图片的容器 */
+    .slide {
+        position: relative;
+        flex-shrink: 0;
+        width: 100%;
+    }
+
+    /* 图片本身 */
+    .slide img {
+        width: 100%;
+        display: block;
+    }
+
+    /* 文字层 - 默认透明不可见 */
+    .caption {
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+        font-size: 18px;
+        font-family: "楷体", "KaiTi", serif;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;  /* 让文字层不影响鼠标点击按钮 */
+    }
+
+    /* 鼠标悬停时显示文字 */
+    .slide:hover .caption {
+        opacity: 1;
+    }
+
+    .prev, .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(4px);
+        color: white;
+        border: none;
+        font-size: 32px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.2s;
+        z-index: 10;
+    }
+    .prev:hover, .next:hover {
+        background: #c21114;
+        transform: translateY(-50%) scale(1.05);
+    }
+    .prev { left: 16px; }
+    .next { right: 16px; }
+    .dots {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        z-index: 10;
+    }
+    .dot {
+        width: 10px;
+        height: 10px;
+        background: rgba(255,255,240,0.6);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .dot.active {
+        background: #ffc107;
+        transform: scale(1.4);
+        box-shadow: 0 0 6px #ffb347;
+    }
+
+    /* 热门推荐区 */
+    .hot-section {
+        margin: 60px auto;
+    }
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .section-title h2 {
+        font-size: 32px;
+        color: #b13b2d;
+        letter-spacing: 2px;
+    }
+    .section-title p {
+        font-size: 16px;
+        color: #9b6a43;
+        margin-top: 6px;
+    }
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 32px;
+    }
+    .food-card {
+        background: #ffffffdd;
+        backdrop-filter: blur(2px);
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .food-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 30px rgba(165, 20, 20, 0.15);
+    }
+    .card-img {
+        width: 100%;
+        height: 180px;
+        overflow: hidden;
+    }
+    .card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.4s;
+    }
+    .food-card:hover .card-img img {
+        transform: scale(1.05);
+    }
+    .food-card h3 {
+        font-size: 20px;
+        margin: 18px 18px 8px;
+        color: #b4442c;
+    }
+    .food-card p {
+        font-size: 14px;
+        margin: 0 18px 12px;
+        color: #5f4c3b;
+        line-height: 1.4;
+    }
+    .tag {
+        display: inline-block;
+        background: #fbe9d2;
+        color: #bc5a2c;
+        border-radius: 30px;
+        padding: 4px 14px;
+        font-size: 12px;
+        margin: 0 18px 18px;
+    }
+
+    /* 传承人区域 */
+    .inherit-section {
+        background: linear-gradient(120deg, #fcf3e0, #feeed8);
+        padding: 60px 0;
+        margin: 40px 0 0;
+    }
+    .section-title.white h2,
+    .section-title.white p {
+        color: #7c3e1f;
+    }
+    .master-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 48px;
+        margin-top: 30px;
+    }
+    .master-card {
+        text-align: center;
+        width: 220px;
+        background: white;
+        padding: 24px 16px 20px;
+        border-radius: 48px;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+        transition: 0.2s;
+    }
+    .master-card img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #ffbc6e;
+    }
+    .master-card h4 {
+        margin: 16px 0 6px;
+        font-size: 20px;
+        color: #ab3e28;
+    }
+    .master-card p {
+        font-size: 13px;
+        color: #7e623f;
+    }
+
+
+
+
+
+    /* ========== 新增：长三角非遗美食地图板块 CSS 样式 ========== */
+    /* 请将此段样式添加到您的 css测试版本.css 文件中 */
+
+    /* 地图外层容器 */
+    .map-wrapper {
+        margin: 60px auto 40px;
+        background: linear-gradient(145deg, #fff7ed, #fff2e2);
+        border-radius: 48px;
+        padding: 20px 0 40px;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 地图主容器 (相对定位基准) */
+    .map-container {
+        position: relative;
+        width: 100%;
+        max-width: 1100px;
+        margin: 20px auto 0;
+        background: #fffbf0;
+        border-radius: 32px;
+        overflow: visible;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        transition: all 0.2s;
+    }
+
+    /* SVG 地图样式 - 完全铺满容器，只作为视觉底图 */
+    .map-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 28px;
+        pointer-events: none;      /* 让SVG不干扰圆点点击 */
+        background: #fef7e8;
+    }
+
+    /* 圆点容器 (绝对定位覆盖层) */
+    .map-dots-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;      /* 容器穿透，但内部圆点可点 */
+    }
+
+    /* 城市美食圆点 */
+    .food-dot {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        background: #c5282c;
+        border: 3px solid #ffefb9;
+        border-radius: 50%;
+        cursor: pointer;
+        pointer-events: auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        transition: transform 0.2s ease, box-shadow 0.2s;
+        z-index: 20;
+        /* 辅助定位小圆点中心偏移 */
+        transform: translate(-50%, -50%);
+    }
+
+    .food-dot:hover {
+        transform: translate(-50%, -50%) scale(1.25);
+        background: #e0452c;
+        box-shadow: 0 0 0 4px rgba(255, 200, 100, 0.6);
+    }
+
+    /* 可选的脉冲动画 (初次加载时略微提示) */
+    @keyframes gentlePulse {
+        0% { box-shadow: 0 0 0 0 rgba(197, 40, 44, 0.4); }
+        70% { box-shadow: 0 0 0 8px rgba(197, 40, 44, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(197, 40, 44, 0); }
+    }
+    .food-dot {
+        animation: gentlePulse 1.5s ease-out 1;
+    }
+
+    /* 美食信息卡片 (圆点旁弹出) */
+    .food-info-card {
+        position: absolute;
+        min-width: 240px;
+        max-width: 300px;
+        background: #ffffffef;
+        backdrop-filter: blur(8px);
+        background: linear-gradient(135deg, #fffef7, #fff9ef);
+        border-radius: 28px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        border: 1px solid #f3cf9f;
+        z-index: 100;
+        transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        font-family: inherit;
+        overflow: hidden;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #b13b2d;
+        color: #fff3e0;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    .close-card {
+        font-size: 24px;
+        font-weight: 400;
+        cursor: pointer;
+        line-height: 1;
+        transition: 0.1s;
+        color: #ffefc0;
+    }
+    .close-card:hover {
+        color: #fff;
+        transform: scale(1.1);
+    }
+
+    .food-info-content {
+        padding: 14px 18px 18px;
+        max-height: 280px;
+        overflow-y: auto;
+        font-size: 14px;
+        color: #4a3a2a;
+    }
+
+    .food-info-content p {
+        margin: 0 0 8px 0;
+        padding-left: 8px;
+        border-left: 3px solid #e6b873;
+        line-height: 1.4;
+    }
+
+    .food-info-content strong {
+        color: #b5452c;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    /* 滚动条美化 */
+    .food-info-content::-webkit-scrollbar {
+        width: 4px;
+    }
+    .food-info-content::-webkit-scrollbar-track {
+        background: #f1e3cf;
+        border-radius: 4px;
+    }
+    .food-info-content::-webkit-scrollbar-thumb {
+        background: #cb7b48;
+        border-radius: 4px;
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .food-dot {
+            width: 22px;
+            height: 22px;
+            border-width: 2px;
+        }
+        .food-info-card {
+            min-width: 200px;
+            max-width: 260px;
+            font-size: 12px;
+        }
+        .card-header {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+    }
+
+    /* 地图部分结束 */
+
+    /* 页脚 */
+    .footer {
+        background: #2a2418;
+        color: #e9dbc9;
+        text-align: center;
+        padding: 28px 0;
+        font-size: 14px;
+    }
+    .footer p {
+        margin: 6px 0;
+        letter-spacing: 0.5px;
+    }
+    </style>
+    
+</head>
+<body>
+
+<!-- 头部导航 -->
+<div class="header">
+    <div class="wrapper">
+        <div class="logo">
+            <h1><a href="#">非遗食探</a></h1>
+        </div>
+        <div class="nav">
+            <ul>
+                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#">名录</a></li>
+                <li><a href="#">美食介绍</a></li>
+                <li><a href="#">传承人</a></li>
+            </ul>
+        </div>
+        <div class="search">
+            <input type="text" placeholder="搜索非遗美食...">
+            <a href="#" aria-label="搜索"></a>
+        </div>
+        <div class="user">
+            <a href="#">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="用户头像">
+                <span>非遗体验官</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 轮播图区域 (banner) -->
+<div class="banner">
+    <div class="carousel-container">
+        <div class="carousel-track" id="track">
+            <div class="slide">
+                <img src="./images/下巴划水.jpg" alt="下巴划水">
+                <div class="caption">下巴划水</div>
+            </div>
+            <div class="slide">
+                <img src="./images/南翔小笼.jpg" alt="南翔小笼">
+                <div class="caption">南翔小笼</div>
+            </div>
+            <div class="slide">
+                <img src="./images/杏花楼广式月饼.jpeg" alt="杏花楼广式月饼">
+                <div class="caption">杏花楼广式月饼</div>
+            </div>
+            <div class="slide">
+                <img src="./images/蟹粉小笼.jpeg" alt="蟹粉小笼">
+                <div class="caption">蟹粉小笼</div>
+            </div>
+        </div>
+        <button class="prev" id="prevBtn">‹</button>
+        <button class="next" id="nextBtn">›</button>
+        <div class="dots" id="dotsContainer"></div>
+    </div>
+</div>
+
+<!-- 主内容：热门推荐 -->
+<div class="hot-section wrapper">
+    <div class="section-title">
+        <h2>🔥 热门非遗美食</h2>
+        <p>匠心传承 · 地道风味</p>
+    </div>
+    <div class="card-grid" id="foodGrid">
+        <div class="food-card">
+            <div class="card-img"><img src="./images/南翔小笼2.jpg" alt="南翔小笼"></div>
+            <h3>南翔小笼</h3>
+            <p>软糯鲜香，皮薄馅鲜，汁多味醇，回味无穷</p>
+            <span class="tag">特色小吃</span>
+        </div>
+        <div class="food-card">
+            <div class="card-img"><img src="./images/功德林素食.jpg" alt="功德林素食"></div>
+            <h3>功德林素食</h3>
+            <p>鲜香醇厚，仿荤逼真，软糯咸口，清爽不腻</p>
+            <span class="tag">素食</span>
+        </div>
+        <div class="food-card">
+            <div class="card-img"><img src="./images/凯司令蛋糕.png" alt="凯司令蛋糕"></div>
+            <h3>凯司令蛋糕</h3>
+            <p>糕体绵密弹软，奶油栗子香浓</p>
+            <span class="tag">西点</span>
+        </div>
+        <div class="food-card">
+            <div class="card-img"><img src="./images/10扣三丝.png" alt="扣三丝"></div>
+            <h3>扣三丝</h3>
+            <p>汤卤醇厚、浓油赤酱、糖重色艳、咸淡适口</p>
+            <span class="tag">上海本帮菜</span>
+        </div>
+    </div>
+</div>
+
+<!-- 传承人风采 -->
+<div class="inherit-section">
+    <div class="wrapper">
+        <div class="section-title white">
+            <h2>👨‍🍳 非遗传承人</h2>
+            <p>守护舌尖上的记忆</p>
+        </div>
+        <div class="master-list">
+            <div class="master-card">
+                <img src="./images/5李建钢（南翔小笼制作技艺第六代传人）.png" alt="传承人">
+                <h4>李建钢</h4>
+                <p>南翔小笼制作技艺第六代传人</p>
+            </div>
+            <div class="master-card">
+                <img src="./images/1赵友铭（功德林素食制作技艺代表性传承人）.jpeg" alt="传承人">
+                <h4>赵友铭</h4>
+                <p>功德林素食制作技艺代表性传承人</p>
+            </div>
+            <div class="master-card">
+                <img src="./images/7任德峰.jpeg" alt="传承人">
+                <h4>任德峰</h4>
+                <p>上海本帮菜肴传统烹饪技艺国家级非遗代表性传承人</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- 地图区域 -->
+
+<!-- ========== 新增：长三角非遗美食地图板块 HTML 片段 ========== -->
+<!-- 请将此段代码放置在页面中 <div class="footer"> 之前，例如传承人区域 (inherit-section) 之后 -->
+<div class="map-wrapper">
+    <div class="wrapper">
+        <div class="section-title">
+            <h2>🗺️ 长三角非遗美食地图</h2>
+            <p>点击城市圆点 · 探寻地道风味之源</p>
+        </div>
+        <div class="map-container" id="mapContainer">
+            <!-- SVG 示意地图（长三角三省一市轮廓 + 主要城市标注） -->
+            <svg class="map-svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet">
+                <!-- 背景底色 -->
+                <rect width="1000" height="700" fill="#fef7e8" rx="16" ry="16" stroke="#d9b48b" stroke-width="2"/>
+                
+                <!-- 安徽区域示意（浅黄） -->
+                <path d="M180,180 L380,160 L400,280 L360,420 L220,440 L140,340 L150,240 Z" fill="#f3e5c9" stroke="#bc9a6c" stroke-width="1.5" stroke-dasharray="4 2"/>
+                <!-- 江苏区域示意 -->
+                <path d="M380,160 L650,150 L680,280 L620,400 L500,380 L400,280 Z" fill="#f9efdb" stroke="#bc9a6c" stroke-width="1.5" stroke-dasharray="4 2"/>
+                <!-- 浙江区域示意 -->
+                <path d="M500,380 L620,400 L680,280 L780,320 L820,500 L700,620 L540,600 L500,500 Z" fill="#f3e5c9" stroke="#bc9a6c" stroke-width="1.5" stroke-dasharray="4 2"/>
+                <!-- 上海区域示意（红点区域） -->
+                <path d="M680,280 L770,270 L800,320 L740,340 L680,310 Z" fill="#f5e1c0" stroke="#bc9a6c" stroke-width="1.5"/>
+                
+                <!-- 主要城市文字标注 -->
+                <text x="280" y="240" font-size="18" fill="#9b6a43" font-weight="bold">安徽</text>
+                <text x="530" y="220" font-size="18" fill="#9b6a43" font-weight="bold">江苏</text>
+                <text x="660" y="420" font-size="18" fill="#9b6a43" font-weight="bold">浙江</text>
+                <text x="720" y="300" font-size="16" fill="#b13b2d" font-weight="bold">上海</text>
+                
+                <!-- 城市标注（辅助参考） -->
+                <text x="260" y="330" font-size="13" fill="#ad7a4a">合肥</text>
+                <text x="440" y="240" font-size="13" fill="#ad7a4a">南京</text>
+                <text x="510" y="270" font-size="13" fill="#ad7a4a">苏州</text>
+                <text x="480" y="310" font-size="13" fill="#ad7a4a">无锡</text>
+                <text x="430" y="200" font-size="13" fill="#ad7a4a">扬州</text>
+                <text x="610" y="350" font-size="13" fill="#ad7a4a">杭州</text>
+                <text x="700" y="480" font-size="13" fill="#ad7a4a">宁波</text>
+                <text x="410" y="520" font-size="13" fill="#ad7a4a">黄山</text>
+                
+                <!-- 水域示意线 -->
+                <path d="M200,480 L300,490 L400,500 L600,520 L780,510" fill="none" stroke="#7faecc" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
+                <text x="480" y="540" font-size="12" fill="#6f9bbe" font-style="italic">长江三角洲</text>
+            </svg>
+
+            <!-- 动态生成的城市美食圆点 (由 JavaScript 动态注入) -->
+            <div id="mapDotsContainer" class="map-dots-container"></div>
+
+            <!-- 点击圆点后弹出的信息卡 -->
+            <div id="foodInfoCard" class="food-info-card" style="display: none;">
+                <div class="card-header">
+                    <strong>🍜 非遗寻味</strong>
+                    <span id="closeInfoCard" class="close-card">&times;</span>
+                </div>
+                <div id="foodInfoContent" class="food-info-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 地图区域结束 -->
+ 
+<!-- 页脚 -->
+<div class="footer">
+    <div class="wrapper">
+        <p>© 2026 非遗食探 | 长三角非遗美食溯源平台 | 弘扬传统文化 共享匠心风味</p>
+        <p>合作联系：feiyi@example.com</p>
+    </div>
+</div>
+
+<script>
+    // 轮播图逻辑 + 自动播放 + 鼠标悬停
+(function(){
+    const track = document.getElementById('track');
+    const slides = document.querySelectorAll('.carousel-track .slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotsContainer = document.getElementById('dotsContainer');
+    let currentIndex = 0;
+    let autoTimer = null;
+    const total = slides.length;
+    const AUTO_INTERVAL = 5000; // 5秒自动切换
+
+    // 创建圆点
+    function createDots() {
+        dotsContainer.innerHTML = '';
+        for(let i = 0; i < total; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if(i === currentIndex) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    // 更新位置和圆点样式
+    function updateCarousel() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, idx) => {
+            if(idx === currentIndex) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+    }
+
+    function goToSlide(index) {
+        if(index < 0) index = total - 1;
+        if(index >= total) index = 0;
+        currentIndex = index;
+        updateCarousel();
+        resetAutoPlay(); // 手动切换后重置计时器
+    }
+
+    function nextSlide() {
+        goToSlide(currentIndex + 1);
+    }
+    function prevSlide() {
+        goToSlide(currentIndex - 1);
+    }
+
+    // 自动播放
+    function startAutoPlay() {
+        if(autoTimer) clearInterval(autoTimer);
+        autoTimer = setInterval(() => {
+            nextSlide();
+        }, AUTO_INTERVAL);
+    }
+    function stopAutoPlay() {
+        if(autoTimer) {
+            clearInterval(autoTimer);
+            autoTimer = null;
+        }
+    }
+    function resetAutoPlay() {
+        stopAutoPlay();
+        startAutoPlay();
+    }
+
+    // 绑定事件与悬停
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        prevSlide();
+    });
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nextSlide();
+    });
+
+    const carouselContainer = document.querySelector('.carousel-container');
+    carouselContainer.addEventListener('mouseenter', stopAutoPlay);
+    carouselContainer.addEventListener('mouseleave', startAutoPlay);
+
+    // 初始化
+    createDots();
+    updateCarousel();
+    startAutoPlay();
+
+})();
+
+
+// ========== 新增：长三角美食地图交互逻辑 ==========
+// 请将此段代码合并到您的 javascript测试版本.js 文件中（或直接追加在末尾）
+
+(function() {
+    // ---------- 依据 Excel 数据整理的长三角城市非遗美食列表 (食物+地址) ----------
+    const cityFoodData = [
+        { name: "上海", left: 74, top: 44, foods: [
+            "南翔小笼 · 上海市嘉定区", "功德林素食 · 上海市黄浦区", "凯司令蛋糕 · 上海市静安区",
+            "扣三丝 · 上海本帮菜", "杏花楼广式月饼 · 上海市黄浦区", "梨膏糖 · 上海市黄浦区",
+            "王家沙本帮点心 · 上海市静安区", "上海黄酒 · 上海市属单位"
+        ] },
+        { name: "南京", left: 44, top: 34, foods: [
+            "南京板鸭/盐水鸭 · 南京市江宁区", "绿柳居素食 · 南京市", "雨花茶 · 南京市",
+            "秦淮风味小吃 · 南京市秦淮区", "马祥兴清真菜 · 南京市鼓楼区"
+        ] },
+        { name: "苏州", left: 58, top: 30, foods: [
+            "碧螺春 · 苏州市吴中区", "苏式糕团 · 苏州市", "昆山奥灶面 · 昆山市",
+            "藏书羊肉 · 苏州市吴中区", "苏式汤面 · 苏州市"
+        ] },
+        { name: "无锡", left: 53, top: 38, foods: [
+            "三凤桥酱排骨 · 无锡市", "惠山油酥 · 无锡市梁溪区", "无锡老式面 · 无锡市惠山区",
+            "太湖船菜 · 无锡市", "清水油面筋 · 无锡市新吴区"
+        ] },
+        { name: "扬州", left: 41, top: 25, foods: [
+            "富春茶点 · 扬州市", "扬州炒饭 · 扬州市", "高邮咸鸭蛋 · 高邮市",
+            "扬州三头宴 · 扬州市", "共和春小吃 · 扬州市广陵区"
+        ] },
+        { name: "镇江", left: 54, top: 34, foods: [
+            "镇江恒顺香醋 · 镇江市", "镇江锅盖面 · 镇江市", "丹阳封缸酒 · 丹阳市",
+            "镇江肴肉 · 镇江市"
+        ] },
+        { name: "常州", left: 49, top: 40, foods: [
+            "常州梨膏糖 · 常州市", "常州大麻糕 · 常州市武进区", "横山桥百叶 · 常州市武进区",
+            "溧阳扎肝 · 常州市溧阳市", "天目湖砂锅鱼头 · 常州市溧阳市"
+        ] },
+        { name: "杭州", left: 68, top: 52, foods: [
+            "西湖龙井 · 杭州市", "东坡肉 · 杭州市", "杭州小笼包 · 杭州市",
+            "王星记扇面(美食文化延伸) · 杭州市"
+        ] },
+        { name: "宁波", left: 79, top: 62, foods: [
+            "宁波汤圆 · 宁波市", "溪口千层饼 · 宁波市奉化区", "象山海鲜 · 宁波市象山县"
+        ] },
+        { name: "绍兴", left: 73, top: 59, foods: [
+            "绍兴黄酒 · 绍兴市", "茴香豆 · 绍兴市", "霉干菜焖肉 · 绍兴市"
+        ] },
+        { name: "合肥", left: 28, top: 47, foods: [
+            "合肥四大名点(麻饼/烘糕/寸金/白切) · 合肥市", "吴山贡鹅 · 合肥市",
+            "三河米饺 · 合肥市肥西县"
+        ] },
+        { name: "黄山", left: 48, top: 69, foods: [
+            "黄山毛峰 · 黄山市", "徽州臭鳜鱼 · 黄山市", "徽州烧饼 · 黄山市",
+            "徽州顶市酥 · 黄山市", "五城豆腐干 · 休宁县"
+        ] },
+        { name: "芜湖", left: 42, top: 54, foods: [
+            "芜湖蟹黄汤包 · 芜湖市", "无为板鸭 · 无为市", "四季春传统小吃 · 芜湖市镜湖区"
+        ] }
+    ];
+
+    // 获取容器元素
+    const dotsContainer = document.getElementById('mapDotsContainer');
+    const infoCard = document.getElementById('foodInfoCard');
+    const infoContent = document.getElementById('foodInfoContent');
+    const closeBtn = document.getElementById('closeInfoCard');
+    const mapContainer = document.getElementById('mapContainer');
+
+    if (!dotsContainer || !infoCard || !infoContent || !mapContainer) return;
+
+    // 存储当前显示的卡片对应的圆点元素 (用于位置更新)
+    let currentDotElement = null;
+    let isCardVisible = false;
+
+    // 生成所有圆点
+    function createDots() {
+        dotsContainer.innerHTML = '';
+        cityFoodData.forEach(city => {
+            const dot = document.createElement('div');
+            dot.className = 'food-dot';
+            // 百分比定位 (基于父容器宽高)
+            dot.style.left = `${city.left}%`;
+            dot.style.top = `${city.top}%`;
+            dot.setAttribute('data-city', city.name);
+            dot.setAttribute('data-foods', JSON.stringify(city.foods));
+            
+            // 点击事件
+            dot.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showFoodInfo(city, dot);
+            });
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    // 显示美食信息卡片 (在圆点附近)
+    function showFoodInfo(city, dotElement) {
+        // 构建内容html
+        let foodsHtml = '';
+        city.foods.forEach(food => {
+            foodsHtml += `<p><strong>🥢</strong> ${food}</p>`;
+        });
+        if (foodsHtml === '') foodsHtml = '<p>暂无非遗记录，即将收录</p>';
+        
+        infoContent.innerHTML = `<div style="font-weight:500; margin-bottom:8px;">📍 ${city.name} · 非遗味道</div>${foodsHtml}`;
+        
+        // 显示卡片
+        infoCard.style.display = 'block';
+        isCardVisible = true;
+        currentDotElement = dotElement;
+        
+        // 计算卡片位置 (位于圆点右侧/下方，避免溢出)
+        const dotRect = dotElement.getBoundingClientRect();
+        const containerRect = mapContainer.getBoundingClientRect();
+        const cardRect = infoCard.getBoundingClientRect();
+        
+        // 相对 mapContainer 的偏移量 (px)
+        let leftPos = dotRect.right - containerRect.left + 12;
+        let topPos = dotRect.top - containerRect.top - 10;
+        
+        // 边界检测 (防止右侧溢出)
+        if (leftPos + (cardRect.width || 260) > containerRect.width) {
+            leftPos = dotRect.left - containerRect.left - (cardRect.width || 260) - 12;
+        }
+        // 下方溢出则向上调整
+        if (topPos + (cardRect.height || 200) > containerRect.height) {
+            topPos = dotRect.bottom - containerRect.top - (cardRect.height || 200) - 8;
+        }
+        if (topPos < 5) topPos = 8;
+        
+        infoCard.style.left = `${leftPos}px`;
+        infoCard.style.top = `${topPos}px`;
+    }
+
+    // 关闭卡片
+    function closeCard() {
+        infoCard.style.display = 'none';
+        isCardVisible = false;
+        currentDotElement = null;
+    }
+
+    // 点击其他地方关闭卡片（可选，提升体验）
+    document.addEventListener('click', function(e) {
+        if (!isCardVisible) return;
+        // 如果点击的目标不是圆点也不是卡片内部，则关闭
+        const isDot = e.target.classList && e.target.classList.contains('food-dot');
+        const isCardInside = infoCard.contains(e.target);
+        if (!isDot && !isCardInside) {
+            closeCard();
+        }
+    });
+
+    // 关闭按钮事件
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeCard();
+        });
+    }
+
+    // 窗口大小改变时重新定位当前打开的卡片
+    window.addEventListener('resize', function() {
+        if (isCardVisible && currentDotElement) {
+            const cityName = currentDotElement.getAttribute('data-city');
+            const cityData = cityFoodData.find(c => c.name === cityName);
+            if (cityData) {
+                showFoodInfo(cityData, currentDotElement);
+            } else {
+                closeCard();
+            }
+        }
+    });
+
+    // 初始化所有圆点
+    createDots();
+})();
+</script>
+</body>
+</html>
